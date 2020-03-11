@@ -1,5 +1,6 @@
-import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ServiceService } from "./../service.service"
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -9,35 +10,61 @@ import { ServiceService } from "./../service.service"
 })
 export class PhoneBookComponent implements OnInit {
   contacts: any = [];
-  toggle: boolean = true;
+  fileData: File = null;
+  imagee: any;
   user;
 
-  constructor(private service: ServiceService) { }
-  edit(event, fName, lName, phone, img) {
-    this.service.getSigleData(event.target.id).subscribe(data => {
-      localStorage.setItem("user", JSON.stringify(data));
-    })
 
-    this.user = {
-      fName: fName.innerText,
-      lName: lName.innerText,
-      phone: phone.innerText,
-      img: img.src,
-      id: event.target.id
+  constructor(private service: ServiceService, private router: Router) { }
+  readURL(event: any) {
+    this.fileData = <File>event.target.files[0];
+    this.preview();
+  }
+  preview() {
+    var mimeType = this.fileData.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
     }
 
-    this.service.user = this.user
+    var reader = new FileReader();
+    reader.readAsDataURL(this.fileData);
+    reader.onload = _event => {
+      this.user.image = reader.result;
+      console.log(this.user);
 
+      this.imagee = reader.result;
+    };
   }
 
-  delete(event) {
+
+  edit(event) {
+    this.service.getSigleData(event.target.id).subscribe(data => {
+      this.user = data;
+    })
+  }
+
+  onSubmit(img, fName, lName, phone) {
+    
+    this.user.firstName = fName.value;
+    this.user.lastName = lName.value;
+    this.user.image = img.value;
+    this.user.mobileNumber = phone.value;
+
+    this.service.editContact(this.user.id, this.user).subscribe(response => {
+      this.service.nextfun(response);
+
+      this.service.getData().subscribe(data => {
+        this.contacts = data;
+      })
+    });
+  }
+
+  delete(event, contact) {
     console.log(event.target.id);
+    contact.remove();
     this.service.deleteContact(event.target.id).subscribe();
   }
 
-  save() {
-    this.toggle = !this.toggle;
-  }
   ngOnInit() {
 
     this.service.getData().subscribe(data => {
@@ -45,10 +72,8 @@ export class PhoneBookComponent implements OnInit {
     });
 
     this.service.BehaviorSubjectData.subscribe(items => {
-      console.log(items)
 
       this.contacts.push(items)
-      console.log(this.contacts)
     })
   }
 }

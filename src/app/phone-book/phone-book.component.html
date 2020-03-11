@@ -15,9 +15,62 @@
               +
             </button>
           </div>
+
+
+          <!-- modal body -->
+
+          <div *ngIf="user" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Edit Contact</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-12 col-sm-offset-3 col-sm-6">
+                        <div class="contacts-container">
+                            <div class="addimg">
+                              <div class="avatar-upload">
+                                <div class="avatar-edit">
+                                  <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg"
+                                    (change)="readURL($event)" />
+                                  <label for="imageUpload"></label>
+                                </div>
+                                <div class="avatar-preview">
+                                  <img id="imagePreview" [src]="user.image" #Datavalue />
+                                </div>
+                              </div>
+                            </div>
+                            <input #img type="text" [value]="Datavalue.src" style="display: none;" />
+                            <div class="form-group">
+                              <input #fName [value]="user.firstName" type="text" class="form-control form-input"
+                                placeholder="First Name" />
+
+                              <input #lName [value]="user.lastName" type="text" class="form-control form-input"
+                                placeholder="Last Name" />
+
+                              <input #phone [value]="user.mobileNumber" type="tel" class="form-control form-input"
+                                placeholder="Phone Number" />
+                            </div>
+                            <button data-dismiss="modal" type="button" (click)="onSubmit(img,fName,lName,phone)" class="btn btn-add">Save</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- modal body -->
           <ul class="contacts">
             <li class="contact" *ngFor="let contact of contacts | filterSearch:searchText:'firstName':'lastName'">
-              <a class="d-flex align-items-center">
+              <a #cont class="d-flex align-items-center">
                 <div class="col-md-2">
                   <img [src]="contact.image" #img class="img-fluid img-circle" alt="">
                 </div>
@@ -25,9 +78,9 @@
                   <span #fName>{{ contact.firstName }}</span>
                   <span #lName>{{ contact.lastName }}</span>
                   <h6 #phone>{{ contact.mobileNumber }}</h6>
-                  <button routerLink='/edit' id={{contact.id}} (click)="edit($event,fName,lName,phone,img)"
+                  <button data-toggle="modal" data-target="#exampleModal" id={{contact.id}} (click)="edit($event)"
                     class="btn btn-success">edit</button>
-                  <button id={{contact.id}} (click)="delete($event)" class="btn btn-danger">delete</button>
+                  <button id={{contact.id}} (click)="delete($event,cont)" class="btn btn-danger">delete</button>
                 </div>
               </a>
             </li>
