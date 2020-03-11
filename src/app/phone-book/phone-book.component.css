@@ -1,0 +1,76 @@
+.container {
+  padding: 30px 0 20px;
+}
+
+.btn {
+  padding: .1rem 1rem;
+  margin-right: 5px;
+  ;
+}
+
+.contacts-container {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.img-circle {
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  border: 2px solid #ccc;
+}
+
+.heading {
+  padding: 10px 20px;
+  background-color: #aaa;
+  border-radius: 0.6rem 0.6rem 0 0;
+}
+
+.body {
+  background-color: #fafafa;
+  border-radius: 0;
+
+}
+
+.addContact {
+  background-color: #DDD;
+  color: #6D6D6D;
+  padding: 10px 20px;
+}
+
+.big-size {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+button.big-size {
+  border: none;
+  background: none;
+  font-weight: 300;
+  font-size: 3rem;
+  padding: 0;
+  margin-top: -25px;
+  color: #6d6d6d;
+}
+
+.contacts {
+  padding: 0;
+}
+
+.contacts .contact {
+  list-style: none;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+span {
+  color: #6d6d6d;
+  font-size: 1.7rem;
+  padding-right: 10px;
+  text-transform: capitalize;
+}
+
+h6 {
+  color: #ccc;
+  font-size: 0.9rem;
+}

@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 col-sm-offset-3 col-sm-6">
+      <div class="contacts-container">
+        <div class="heading">
+          <div class="search">
+            <input type="text" class="form-control text-center" name="search" placeholder="Search Contacts"
+              [(ngModel)]="searchText">
+          </div>
+        </div>
+        <div class="body">
+          <div class="addContact">
+            <span class="big-size">Add New Contact</span>
+            <button type="button" class="big-size" style="float: right;" [routerLink]="['/add']">
+              +
+            </button>
+          </div>
+          <ul class="contacts">
+            <li class="contact" *ngFor="let contact of contacts | filterSearch:searchText:'firstName':'lastName'">
+              <a class="d-flex align-items-center">
+                <div class="col-md-2">
+                  <img [src]="contact.image" #img class="img-fluid img-circle" alt="">
+                </div>
+                <div class="col-md-10">
+                  <span #fName>{{ contact.firstName }}</span>
+                  <span #lName>{{ contact.lastName }}</span>
+                  <h6 #phone>{{ contact.mobileNumber }}</h6>
+                  <button routerLink='/edit' id={{contact.id}} (click)="edit($event,fName,lName,phone,img)"
+                    class="btn btn-success">edit</button>
+                  <button id={{contact.id}} (click)="delete($event)" class="btn btn-danger">delete</button>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
