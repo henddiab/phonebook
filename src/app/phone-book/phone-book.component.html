@@ -2,72 +2,29 @@
   <div class="row">
     <div class="col-md-12 col-sm-offset-3 col-sm-6">
       <div class="contacts-container">
+
+        <!-- start search input -->
         <div class="heading">
           <div class="search">
             <input type="text" class="form-control text-center" name="search" placeholder="Search Contacts"
               [(ngModel)]="searchText">
           </div>
         </div>
+        <!-- end search input -->
+
         <div class="body">
+
+          <!-- start add button -->
           <div class="addContact">
             <span class="big-size">Add New Contact</span>
             <button type="button" class="big-size" style="float: right;" [routerLink]="['/add']">
               +
             </button>
           </div>
+          <!-- end add button -->
 
 
-          <!-- modal body -->
-
-          <div *ngIf="user" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Edit Contact</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <div class="container">
-                    <div class="row">
-                      <div class="col-md-12 col-sm-offset-3 col-sm-6">
-                        <div class="contacts-container">
-                            <div class="addimg">
-                              <div class="avatar-upload">
-                                <div class="avatar-edit">
-                                  <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg"
-                                    (change)="readURL($event)" />
-                                  <label for="imageUpload"></label>
-                                </div>
-                                <div class="avatar-preview">
-                                  <img id="imagePreview" [src]="user.image" #Datavalue />
-                                </div>
-                              </div>
-                            </div>
-                            <input #img type="text" [value]="Datavalue.src" style="display: none;" />
-                            <div class="form-group">
-                              <input #fName [value]="user.firstName" type="text" class="form-control form-input"
-                                placeholder="First Name" />
-
-                              <input #lName [value]="user.lastName" type="text" class="form-control form-input"
-                                placeholder="Last Name" />
-
-                              <input #phone [value]="user.mobileNumber" type="tel" class="form-control form-input"
-                                placeholder="Phone Number" />
-                            </div>
-                            <button data-dismiss="modal" type="button" (click)="onSubmit(img,fName,lName,phone)" class="btn btn-add">Save</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- modal body -->
+          <!-- start list of contacts -->
           <ul class="contacts">
             <li class="contact" *ngFor="let contact of contacts | filterSearch:searchText:'firstName':'lastName'">
               <a #cont class="d-flex align-items-center">
@@ -85,6 +42,82 @@
               </a>
             </li>
           </ul>
+          <!-- end list of contacts -->
+
+
+          <!-- start modal body -->
+          <div *ngIf="user" class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+
+                <!-- start modal header -->
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Edit Contact</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <!-- end modal header -->
+
+                <div class="modal-body">
+                  <form (ngSubmit)="onSubmit()" [formGroup]="addContact">
+
+                    <!-- start image section -->
+                    <div class="addimg">
+                      <div class="avatar-upload">
+                        <div class="avatar-edit">
+                          <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg" (change)="readURL($event)" />
+                          <label for="imageUpload"></label>
+                        </div>
+
+                        <div class="avatar-preview">
+                          <img id="imagePreview" [src]='user.image' #Datavalue />
+                        </div>
+
+                      </div>
+                    </div>
+                    <!-- end image section -->
+
+                    <input type="text" formControlName="image" [value]="Datavalue.src" style="display: none;" />
+
+                    <div class="form-group">
+
+                      <!-- first name -->
+                      <input value={{user.firstName}} type="text" class="form-control form-input"
+                        placeholder="First Name" formControlName="firstName" />
+
+                      <div class="errormsg"
+                        *ngIf="addContact.get('firstName').hasError('required') && addContact.touched">
+                        this field is requeired
+                      </div>
+
+                      <!-- last name -->
+                      <input value={{user.lastName}} type="text" class="form-control form-input" placeholder="Last Name"
+                        formControlName="lastName" />
+                      <div class="errormsg"
+                        *ngIf="addContact.get('lastName').hasError('required') && addContact.touched">
+                        this field is requeired
+                      </div>
+
+                      <!-- phone  -->
+                      <input value={{user.mobileNumber}} type="tel" class="form-control form-input"
+                        placeholder="Phone Number" formControlName="mobileNumber" />
+                      <div class="errormsg"
+                        *ngIf="addContact.get('mobileNumber').hasError('required') && addContact.touched">
+                        this field is requeired
+                      </div>
+                    </div>
+
+                    <!-- save changes button -->
+                    <button type="submit" class="btn btn-add" [disabled]="!addContact.valid"
+                      data-dismiss="modal">Save</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end modal body -->
         </div>
       </div>
     </div>

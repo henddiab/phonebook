@@ -4,7 +4,11 @@
       <div class="contacts-container">
         <h3>Add New Contact</h3>
         <hr />
+
         <form (ngSubmit)="onSubmit()" [formGroup]="addContact">
+
+          <!-- start image section -->
+
           <div class="addimg">
             <div class="avatar-upload">
               <div class="avatar-edit">
@@ -16,22 +20,36 @@
               </div>
             </div>
           </div>
+
+          <!-- end image section -->
+
           <input type="text" formControlName="image" [value]="Datavalue.src" style="display: none;" />
+
+
           <div class="form-group">
+            <!-- first name -->
             <input type="text" class="form-control form-input" placeholder="First Name" formControlName="firstName" />
             <div class="errormsg" *ngIf="addContact.get('firstName').hasError('required') && addContact.touched">
               this field is requeired
             </div>
+
+
+            <!-- last name -->
             <input type="text" class="form-control form-input" placeholder="Last Name" formControlName="lastName" />
             <div class="errormsg" *ngIf="addContact.get('lastName').hasError('required') && addContact.touched">
               this field is requeired
             </div>
+
+
+            <!-- phone -->
             <input type="tel" class="form-control form-input" placeholder="Phone Number"
               formControlName="mobileNumber" />
             <div class="errormsg" *ngIf="addContact.get('mobileNumber').hasError('required') && addContact.touched">
               this field is requeired
             </div>
           </div>
+
+          <!-- submit -->
           <button type="submit" class="btn btn-add" [disabled]="!addContact.valid">Add
             Contact</button>
           <button type="button" class="btn btn-cancel" [routerLink]="['']">Cancel</button>
